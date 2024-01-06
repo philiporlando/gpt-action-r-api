@@ -1,12 +1,22 @@
-def process_r_output(raw_result):
-    """
-    Process the raw output from rpy2, removing the R output index and formatting it into a readable string.
+import rpy2.robjects as robjects
+from rpy2.rinterface_lib.embedded import RRuntimeError
+import contextlib
+import io
+from fastapi import HTTPException
 
-    :param raw_result: The raw output from rpy2 execution.
-    :return: Formatted string.
-    """
-    # Join the output, remove R index [1], extra quotes, and newlines
-    formatted_result = "".join(raw_result)
-    formatted_result = formatted_result.replace("[1] ", "").replace('\\"', '"').strip()
 
-    return formatted_result
+def run_r_code(code):
+    try:
+        # Parse the R code
+        parsed_code = robjects.r.parse(text=code)
+
+        # Evaluate the parsed R code
+        with io.StringIO() as stdout, io.StringIO() as stderr:
+            with contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                result = robjects.r.eval(parsed_code)
+
+            output, error = stdout.getvalue(), stderr.getvalue()
+
+        return output, error, result
+    except RRuntimeError as e:
+        raise HTTPException(status_code=400, detail="Invalid R code")

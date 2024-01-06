@@ -1,21 +1,19 @@
 from fastapi import APIRouter, HTTPException
-import rpy2.robjects as robjects
-from rpy2.rinterface_lib.embedded import RRuntimeError
 from app.models import RCodeRequest
-from app.utils.r_utils import process_r_output
+from app.utils.r_utils import run_r_code
 
 
 router = APIRouter()
 
 
 @router.post("/execute-r")
-async def execute_r_code(request: RCodeRequest):
+async def execute_r_route(request: RCodeRequest):
     try:
-        # Execute the R code and capture the output
-        raw_result = robjects.r(f"capture.output({request.code})")
-        result = process_r_output(raw_result)
-        return {"result": str(result)}
-    except RRuntimeError as e:
-        raise HTTPException(status_code=400, detail="Invalid R code")
+        stdout, stderr, result = run_r_code(request.code)
+        if stderr:
+            raise HTTPException(status_code=400, detail=stderr)
+        return {"message": "R code executed successfully", "result": result[0]}
+    except HTTPException as http_exception:
+        raise http_exception  # Reraise the HTTPException with its original status code and detail
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal Server Error")
