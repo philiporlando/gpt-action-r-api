@@ -11,7 +11,7 @@ def test_run_r_code_success():
 def test_run_r_code_failure():
     with pytest.raises(HTTPException) as exc_info:
         # Attempt to run invalid R code
-        run_r_code("invalid R code")
+        run_r_code("import this")
 
     # Check the raised exception
     exception = exc_info.value
