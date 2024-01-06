@@ -1,13 +1,42 @@
-# Start from a Python 3.9 base image
+# Start from a Python 3.10 base image
 FROM python:3.10
-
-# Install R
-RUN apt-get update \
-    && apt-get install -y r-base \
-    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /usr/src/gpt_action_r_api
+
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    ed \
+    less \
+    locales \
+    vim-tiny \
+    wget \
+    ca-certificates \
+    fonts-texgyre \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure default locale
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen en_US.utf8 \
+    && /usr/sbin/update-locale LANG=en_US.UTF-8
+
+# Set environment variables
+ENV LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    R_BASE_VERSION=4.2.1
+
+# Add CRAN repository for Debian Bookworm
+RUN echo "deb http://cloud.r-project.org/bin/linux/debian bookworm-cran40/" > /etc/apt/sources.list.d/cran.list \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
+
+# Install R
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    r-base \
+    r-base-dev \
+    r-recommended \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the poetry files to the working directory
 COPY pyproject.toml .
