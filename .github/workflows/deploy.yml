@@ -36,7 +36,7 @@ jobs:
         username: ${{ secrets.DROPLET_USER }}
         key: ${{ secrets.DROPLET_SSH_KEY }}
         script: |
-          docker pull yourusername/yourapp:latest
-          docker stop myapp || true
-          docker rm myapp || true
-          docker run -d --name myapp yourusername/yourapp:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/gpt-action-r-api:latest
+          docker stop gpt-action-r-api || true
+          docker rm gpt-action-r-api || true
+          docker run -d --name myappgpt-action-r-api ${{ secrets.DOCKERHUB_USERNAME }}/gpt-action-r-api:latest
