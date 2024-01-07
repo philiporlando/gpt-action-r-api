@@ -29,6 +29,11 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/gpt-action-r-api:latest
 
+    - name: Check Docker service status
+      run: |
+        sudo service docker status || sudo service docker start
+        docker info
+
     - name: SSH and Deploy to Droplet
       uses: appleboy/ssh-action@master
       with:
