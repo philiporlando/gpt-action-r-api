@@ -1,5 +1,8 @@
 # GPT Action R Interpreter
 
+> [!IMPORTANT]
+> This project is a work in progress and is not yet operational.
+
 The GPT Action R Interpreter project is designed as a specialized component to enhance ChatGPT's capabilities in providing high-quality R code solutions. This project establishes a unique interface, solely intended to be invoked by a GPT Action, for executing and evaluating R code. It aims to mimic the functionality of ChatGPT's Python Code Interpreter, but with a focus on the R programming language, widely recognized for its application in statistics and data analysis.
 
 ## Project Components
