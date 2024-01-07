@@ -78,6 +78,31 @@ This can be useful to test that the environment is configured correctly.
 
 Deployment is managed via GitHub Actions. Each time a new branch is merged into `main`, this application will automatically be deployed to a DigitalOcean droplet. Please refer to `.github/workflows/deploy.yml` for more details on this process.
 
+#### Prerequisite: DockerHub Account
+
+To facilitate the deployment of this application, a DockerHub account is required. DockerHub serves as a cloud-based registry service to host Docker images, essential for the easy and efficient deployment of your application to DigitalOcean.
+
+##### Why DockerHub?
+
+- **Accessibility**: Centralized hosting for Docker images, simplifying the deployment process.
+- **Version Control**: Maintain and manage different versions of your Docker images.
+- **CI/CD Integration**: Allows for automated building, testing, and deployment of images in your CI/CD pipeline.
+
+##### Setting Up a DockerHub Account
+
+1. **Account Creation**: Sign up at [DockerHub](https://hub.docker.com/signup).
+2. **Repository Setup**: Create a new repository on DockerHub for storing your Docker images.
+3. **CI/CD Integration**: Connect your DockerHub account with your CI/CD tools for automated image handling.
+
+##### Using DockerHub in This Project
+
+- **Building Images**: Build your Docker image and tag it appropriately (`username/repository:tag`).
+- **Pushing Images**: Use `docker push` to upload your Docker image to DockerHub.
+- **Deployment**: The CI/CD pipeline automates the deployment process by pulling the latest image from DockerHub to your DigitalOcean droplet.
+
+Remember to keep your DockerHub credentials secure and handy for use in CI/CD integration and Docker operations.
+
+
 #### Prerequisite: SSH Configuration on Droplet
 
 1. **Generate SSH Key Pair** (if not already done):
