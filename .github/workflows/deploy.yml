@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: 
+      APP_NAME: gpt-action-r-api  # Define the app name here
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -27,7 +29,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: yourusername/yourapp:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:latest
 
     - name: SSH and Deploy to Droplet
       uses: appleboy/ssh-action@master
@@ -36,7 +38,7 @@ jobs:
         username: ${{ secrets.DROPLET_USER }}
         key: ${{ secrets.DROPLET_SSH_KEY }}
         script: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/gpt-action-r-api:latest
-          docker stop gpt-action-r-api || true
-          docker rm gpt-action-r-api || true
-          docker run -d --name myappgpt-action-r-api ${{ secrets.DOCKERHUB_USERNAME }}/gpt-action-r-api:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:latest
+          docker stop ${{ env.APP_NAME }} || true
+          docker rm ${{ env.APP_NAME }} || true
+          docker run -d --name ${{ env.APP_NAME }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.APP_NAME }}:latest
