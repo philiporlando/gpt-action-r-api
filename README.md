@@ -52,7 +52,7 @@ Using Docker locally allows developers to replicate the production environment o
 
 To build a Docker image of the application, use the following command:
 
-```
+```bash
 docker build -t app .
 ```
 
@@ -60,7 +60,7 @@ docker build -t app .
 
 Once the image is built, you can run it as a container like so:
 
-```
+```bash
 docker run -p 8000:8000 app
 ```
 
@@ -68,7 +68,7 @@ docker run -p 8000:8000 app
 
 To access the shell of a running container, use the following command:
 
-```
+```bash
 docker exec -t [container_name_or_id] bash
 ```
 
@@ -102,13 +102,24 @@ To facilitate the deployment of this application, a DockerHub account is require
 
 Remember to keep your DockerHub credentials secure and handy for use in CI/CD integration and Docker operations.
 
+#### Prerequisite: Docker Configuration on Droplet
+
+For seamless deployment and management of Docker containers on your DigitalOcean droplet, ensure that your user is correctly configured to interact with Docker:
+
+1. **Add User to Docker Group**: 
+   Run the following command on your droplet to add your user to the Docker group. This grants the user permission to execute Docker commands without needing `sudo`.
+
+   ```bash
+   sudo usermod -aG docker your-username
+   ```
+
 
 #### Prerequisite: SSH Configuration on Droplet
 
 1. **Generate SSH Key Pair** (if not already done):
     - Use `ssh-keygen` to generate a new key pair. This is done on your local machine or any secure environment.
     - Remember, your private key **(`id_rsa`)** is confidential and must not be exposed.
-    ```
+    ```bash
     ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
     ```
 2. **Add the Public Key to your DigitalOcean Droplet**:
