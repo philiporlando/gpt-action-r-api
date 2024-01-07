@@ -151,3 +151,10 @@ DROPLET_IP
 DROPLET_SSH_KEY
 DROPLET_USER
 ```
+
+### Web Server
+
+**TODO**
+- [ ] DNS Config
+- [ ] Reverse Proxy via apache2 or nginx?
+- [ ] Testing
