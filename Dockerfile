@@ -51,8 +51,23 @@ COPY app/ app/
 # Restore R packages from renv.lock
 # TODO troubleshoot renv::restore() requiring user prompt?
 COPY renv.lock .
+COPY .Rprofile .
+COPY renv/activate.R renv/
+COPY renv/settings.json renv/
+
 RUN Rscript -e 'install.packages("renv")'
-RUN Rscript -e 'Sys.setenv(RENV_CONFIG_RESTORE_CONFIRM = FALSE); renv::restore()'
+# RUN Rscript -e 'Sys.setenv(RENV_CONFIG_RESTORE_CONFIRM = FALSE); renv::restore()'
+
+# Non-interactive restore script
+RUN echo "\
+    options(renv.config.auto.snapshot = FALSE);\n\
+    options(renv.config.auto.upgrade = FALSE);\n\
+    options(renv.confirm = FALSE);\n\
+    library(renv);\n\
+    renv::restore();" > restore_script.R
+
+# Run the restore script
+RUN Rscript --verbose restore_script.R
 
 # Specify the port number the container should expose
 EXPOSE 8000
