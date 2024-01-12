@@ -35,7 +35,7 @@ The [renv](https://github.com/rstudio/renv) package is used to manage the R depe
 To add a new R package to this project, launch a local R session and run the following:
 ```r
 renv::install("<pkg-name>")
-renv::snapshot
+renv::snapshot()
 ```
 
 This will download the package to the local cache, but more importantly, it will also update the `renv.lock` file after 
